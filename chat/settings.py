@@ -127,7 +127,7 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'chat.User'
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 CHANNEL_LAYERS = {
     "default": {
@@ -138,3 +138,7 @@ CHANNEL_LAYERS = {
         "ROUTING": "chat.routing.channel_routing",
     },
 }
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
