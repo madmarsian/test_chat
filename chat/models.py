@@ -19,4 +19,14 @@ class Message(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, default=None)
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
 
+    def __unicode__(self):
+        return '[{timestamp}] {handle}: {message}'.format(**self.as_dict())
+
+    @property
+    def formatted_timestamp(self):
+        return self.timestamp.strftime('%b %-d %-I:%M %p')
+
+    def as_dict(self):
+        return {'handle': self.handle, 'message': self.message, 'timestamp': self.formatted_timestamp}
+
 
