@@ -128,3 +128,13 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'chat.User'
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+        "ROUTING": "chat.routing.channel_routing",
+    },
+}
