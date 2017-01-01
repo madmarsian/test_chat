@@ -1,10 +1,10 @@
-import re
 import json
 import logging
+
 from channels import Group
-from .models import Room
 from channels.auth import channel_session_user, channel_session_user_from_http
 
+from .models import Room
 
 log = logging.getLogger(__name__)
 

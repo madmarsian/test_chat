@@ -1,11 +1,13 @@
 from django.db import transaction
 from django.shortcuts import render, redirect
-from haikunator import Haikunator
-from .models import Room, UserRoom
 from django.urls import reverse
+from haikunator import Haikunator
+
+from .models import Room, UserRoom
 
 
 def about(request):
+    active_chats = None
     if not request.user.is_anonymous():
         active_chats = request.user.userroom_set.exclude(deleted=True).values_list('room__label', flat=True)
 
@@ -16,13 +18,13 @@ def new_room(request):
     """
     Randomly create a new room, and redirect to it.
     """
-    new_room = None
-    while not new_room:
+    new_room_ = None
+    while not new_room_:
         with transaction.atomic():
             label = Haikunator().haikunate()
             if Room.objects.filter(label=label).exists():
                 continue
-            new_room = Room.objects.create(label=label)
+            new_room_ = Room.objects.create(label=label)
     return redirect(chat_room, label=label)
 
 
@@ -48,7 +50,7 @@ def chat_room(request, label):
     return render(request, "chat/room.html", {
         'room': room,
         'messages': messages,
-})
+        })
 
 
 def leave_chat(request, label):
@@ -62,4 +64,3 @@ def leave_chat(request, label):
         connection.deleted = True
         connection.save()
     return redirect(reverse('about'))
-
