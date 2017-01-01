@@ -9,5 +9,4 @@
 *.pid
 
 # django static files and media folders
-/static
 /media
