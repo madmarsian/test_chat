@@ -25,7 +25,7 @@ SECRET_KEY = 'd5u(fr9oi87j%)f^m-re6-bx^c2*md677_880wi83(($9jc@e5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -49,12 +51,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'test_chat.urls'
+ROOT_URLCONF = 'chat.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'test_chat.wsgi.application'
+WSGI_APPLICATION = 'chat.wsgi.application'
 
 
 # Database
@@ -76,7 +78,7 @@ WSGI_APPLICATION = 'test_chat.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test_chat',
+        'NAME': 'test_chat_',
         'USER': 'zendyhealth',
         'PASSWORD': 'fal5bf1vgdpzm755',
         'HOST': '127.0.0.1',
@@ -122,3 +124,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'chat.User'
