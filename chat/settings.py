@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
     'channels',
     'chat',
 ]
@@ -78,7 +84,7 @@ WSGI_APPLICATION = 'chat.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test_chat_',
+        'NAME': 'test_chat_1',
         'USER': 'zendyhealth',
         'PASSWORD': 'fal5bf1vgdpzm755',
         'HOST': '127.0.0.1',
@@ -125,8 +131,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'chat.User'
-
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 CHANNEL_LAYERS = {
@@ -165,3 +169,12 @@ LOGGING = {
         },
     },
 }
+
+LOGIN_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1

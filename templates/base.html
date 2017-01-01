@@ -11,6 +11,18 @@
   <link rel="stylesheet" href="{% static 'chat.css' %}">
 </head>
 <body>
+    <div>
+        <a href="{% url 'about' %}">Home</a>
+    </div>
+    <div>
+      {{ user }}
+      {% if user.is_anonymous %}
+      <a href="{% url 'account_login' %}">login</a>
+      {% else %}
+      <a href="{% url 'account_logout' %}">logout</a>
+      {% endif %}
+    </div>
+
   <div class="section">
     <div class="container">
       {% block content %}{% endblock content %}

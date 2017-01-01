@@ -1,22 +1,25 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 
 
 class Room(models.Model):
     name = models.TextField()
     label = models.SlugField(unique=True)
+    members = models.ManyToManyField(User, through='UserRoom')
 
 
-class User(AbstractUser):
-    pass
+class UserRoom(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    deleted = models.BooleanField(default=False)
 
 
 class Message(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True, default=None, related_name='messages')
     room = models.ForeignKey(Room, related_name='messages')
-    handle = models.TextField()
+    handle = models.TextField(blank=True, null=True, default=None, max_length=20)
     message = models.TextField()
-    user = models.ForeignKey(User, null=True, blank=True, default=None)
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
 
     def __unicode__(self):
