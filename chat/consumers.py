@@ -67,7 +67,7 @@ def ws_receive(message):
         data['user_id'] = message.user.id
         data['handle'] = message.user.username
 
-    if data:
+    if data and data['message']:
         log.debug('chat message room=%s handle=%s message=%s',
                   room.label, data['handle'], data['message'])
         m = room.messages.create(**data)

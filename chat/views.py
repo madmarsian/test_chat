@@ -8,6 +8,9 @@ from .models import Room, UserRoom
 
 
 def about(request):
+    """
+    Home page
+    """
     active_chats = None
     if not request.user.is_anonymous():
         active_chats = request.user.userroom_set.exclude(deleted=True).values_list('room__label', flat=True)
@@ -31,12 +34,8 @@ def new_room(request):
 
 def chat_room(request, label):
     """
-    Room view - show the room, with latest messages.
-    The template for this view has the WebSocket business to send and stream
-    messages, so see the template for where the magic happens.
+    Room view - show the room, with messages.
     """
-    # If the room with the given label doesn't exist, automatically create it
-    # upon first visit (a la etherpad).
     room, created = Room.objects.get_or_create(label=label)
 
     if not request.user.is_anonymous():
@@ -45,7 +44,6 @@ def chat_room(request, label):
             user_room.deleted = False
             user_room.save()
 
-    # We want to show the last 50 messages, ordered most-recent-last
     messages = reversed(room.messages.order_by('-timestamp'))
 
     return render(request, "chat/room.html", {
@@ -55,7 +53,12 @@ def chat_room(request, label):
 
 
 def leave_chat(request, label):
+    """
+    remove chat from your list of used rooms
+    """
     user = request.user
+    if user.is_anonymous():
+        return redirect(reverse('about'))
     try:
         room = Room.objects.get(label=label)
         connection = UserRoom.objects.get(room=room, user=user)
@@ -68,6 +71,9 @@ def leave_chat(request, label):
 
 
 class CustomLogInView(LoginView):
+    """
+    override template to remove link to forget-your-password functionality
+    """
     template_name = 'chat/login.html'
 
 login = CustomLogInView.as_view()

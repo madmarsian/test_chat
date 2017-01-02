@@ -31,5 +31,3 @@ class Message(models.Model):
 
     def as_dict(self):
         return {'handle': self.handle, 'message': self.message, 'timestamp': self.formatted_timestamp}
-
-
