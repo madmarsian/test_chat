@@ -11,27 +11,20 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 import dj_database_url
 import os
+import random
+import string
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'd5u(fr9oi87j%)f^m-re6-bx^c2*md677_880wi83(($9jc@e5'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+SECRET_KEY = os.environ.get("SECRET_KEY", "".join(random.choice(string.printable) for i in range(40)))
+DEBUG = os.environ.get("DEBUG", False)
 
 ALLOWED_HOSTS = ['obscure-depths-39613.herokuapp.com']
-DATABASES = {
-    'default': None
-}
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
 
+DATABASES = {
+    'default': dj_database_url.config(default="postgres:///channels-example", conn_max_age=500)
+}
 
 # Application definition
 
@@ -76,21 +69,12 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'debug': DEBUG,
         },
     },
 ]
 
 WSGI_APPLICATION = 'chat.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
-
-
-
-# Password validation
-# https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -107,29 +91,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.10/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
-
 STATIC_URL = '/static/'
-
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 CHANNEL_LAYERS = {
     "default": {
@@ -141,11 +114,6 @@ CHANNEL_LAYERS = {
     },
 }
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-
-# Logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -169,12 +137,10 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL = '/'
-
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
-
 SITE_ID = 1
 ACCOUNT_FORMS = {
     'signup': 'chat.forms.CustomSignupForm',
