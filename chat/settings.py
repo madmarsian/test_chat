@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/1.10/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
-import dj_database_url
 import os
 import random
 import string
@@ -22,6 +21,8 @@ DEBUG = os.environ.get("DEBUG", False)
 
 ALLOWED_HOSTS = ['obscure-depths-39613.herokuapp.com']
 
+
+import dj_database_url
 DATABASES = {
     'default': dj_database_url.config(default="postgres:///channels-example", conn_max_age=500)
 }
