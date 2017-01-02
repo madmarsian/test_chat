@@ -81,16 +81,7 @@ WSGI_APPLICATION = 'chat.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test_chat_1',
-        'USER': 'zendyhealth',
-        'PASSWORD': 'fal5bf1vgdpzm755',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
+
 
 
 # Password validation
