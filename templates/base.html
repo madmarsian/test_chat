@@ -2,28 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>{% block title %}Django Channels Example{% endblock %}</title>
+  <title>{% block title %}Django Chat Example{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600,200' rel='stylesheet' type='text/css'>
   {% load staticfiles %}
-  <link rel="stylesheet" href="{% static 'normalize.css' %}">
-  <link rel="stylesheet" href="{% static 'skeleton.css' %}">
-  <link rel="stylesheet" href="{% static 'chat.css' %}">
+
 </head>
 <body>
     <div>
         <a href="{% url 'about' %}">Home</a>
     </div>
     <div>
-      {{ user }}
+      {{ user }} <br/>
       {% if user.is_anonymous %}
-      <a href="{% url 'account_login' %}">login</a>
+      Please, <a href="{% url 'account_login' %}">log in</a> or <a href="{% url 'account_signup' %}">sign up</a>
       {% else %}
-      <a href="{% url 'account_logout' %}">logout</a>
+      <a href="{% url 'account_logout' %}">log out</a>
       {% endif %}
     </div>
 
-  <div class="section">
+  <div style="display:block;">
     <div class="container">
       {% block content %}{% endblock content %}
     </div>

@@ -1,3 +1,4 @@
+from allauth.account.views import LoginView
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -45,7 +46,7 @@ def chat_room(request, label):
             user_room.save()
 
     # We want to show the last 50 messages, ordered most-recent-last
-    messages = reversed(room.messages.order_by('-timestamp')[:50])
+    messages = reversed(room.messages.order_by('-timestamp'))
 
     return render(request, "chat/room.html", {
         'room': room,
@@ -64,3 +65,9 @@ def leave_chat(request, label):
         connection.deleted = True
         connection.save()
     return redirect(reverse('about'))
+
+
+class CustomLogInView(LoginView):
+    template_name = 'chat/login.html'
+
+login = CustomLogInView.as_view()

@@ -10,8 +10,8 @@ class Room(models.Model):
 
 
 class UserRoom(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    user = models.ForeignKey(User)
+    room = models.ForeignKey(Room)
     deleted = models.BooleanField(default=False)
 
 

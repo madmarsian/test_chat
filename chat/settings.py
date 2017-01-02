@@ -178,3 +178,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SITE_ID = 1
+ACCOUNT_FORMS = {
+    'signup': 'chat.forms.CustomSignupForm',
+}
+ACCOUNT_LOGOUT_ON_GET = True

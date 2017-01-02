@@ -1,0 +1,20 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Sign In</h1>
+
+<p>If you have not created an account yet, then please
+<a href="{% url 'account_signup' %}">sign up</a> first.</p>
+
+<form class="login" method="POST" action="{% url 'account_login' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+
+  <button class="primaryAction" type="submit">Sign In</button>
+</form>
+{% endblock content %}
