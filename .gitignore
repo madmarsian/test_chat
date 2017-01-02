@@ -2,11 +2,12 @@
 
 # PyCharm project files
 /.idea
+localhost.py
 
 # other files
-*localhost.py
-*.pyc
 *.pid
 
-# django static files and media folders
-/media
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
