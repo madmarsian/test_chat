@@ -9,6 +9,15 @@ from .models import Room
 log = logging.getLogger(__name__)
 
 
+def send_system_message(room, message, text):
+    data = {
+        'handle': "SystemMessage",
+        'message': text
+    }
+    m = room.messages.create(**data)
+    Group('chat-' + room.label, channel_layer=message.channel_layer).send({'text': json.dumps(m.as_dict())})
+
+
 @channel_session_user_from_http
 def ws_connect(message):
     # Extract the room from the message. This expects message.path to be of the
@@ -33,12 +42,8 @@ def ws_connect(message):
 
     Group('chat-' + label, channel_layer=message.channel_layer).add(message.reply_channel)
 
-    data = {}
-    user_name = message.user.username if message.user.is_authenticated() else 'Anonymous User'
-    data['message'] = "{} has entered the room".format(user_name)
-    data['handle'] = "SystemMessage"
-    m = room.messages.create(**data)
-    Group('chat-' + label, channel_layer=message.channel_layer).send({'text': json.dumps(m.as_dict())})
+    text = "{} has entered the room".format(message.user.username if message.user.is_authenticated() else 'Anonymous User')
+    send_system_message(room, message, text)
 
     message.channel_session['room'] = room.label
 
@@ -81,12 +86,10 @@ def ws_disconnect(message):
     try:
         label = message.channel_session['room']
         room = Room.objects.get(label=label)
-        data = {}
-        user_name = message.user.username if message.user.is_authenticated() else 'Anonymous User'
-        data['message'] = "{} has left the room".format(user_name)
-        data['handle'] = "SystemMessage"
-        m = room.messages.create(**data)
-        Group('chat-' + label, channel_layer=message.channel_layer).send({'text': json.dumps(m.as_dict())})
+
+        text = "{} has left the room".format(message.user.username if message.user.is_authenticated() else 'Anonymous User')
+        send_system_message(room, message, text)
+
         Group('chat-' + label, channel_layer=message.channel_layer).discard(message.reply_channel)
     except (KeyError, Room.DoesNotExist):
         pass
